@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQC | Design. Discuss. Disrupt.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --accent-color: #00ffcc;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --card-bg: rgba(20, 20, 20, 0.6);
+            --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 3D Background Container */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* Navigation */
+        .navbar {
+            padding: 1.5rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+        .logo span { color: var(--accent-color); }
+
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: var(--transition);
+        }
+        .nav-links a:hover { color: var(--accent-color); }
+
+        /* Sections */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+        }
+
+        .hero h1 { font-size: clamp(3rem, 8vw, 6rem); line-height: 1; margin-bottom: 1.5rem; }
+        .gradient-text {
+            background: linear-gradient(90deg, #00ffcc, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section { padding: 8rem 10%; position: relative; }
+        .section-title {
+            font-size: 0.7rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        .section-text { font-size: clamp(1.5rem, 4vw, 2.5rem); max-width: 900px; font-weight: 300; }
+
+        /* Project Gallery */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .project-card:hover { border-color: var(--accent-color); transform: translateY(-5px); }
+
+        .img-container {
+            width: 100%;
+            height: 300px;
+            background: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: var(--transition);
+        }
+
+        .project-card:hover img { filter: grayscale(0%); transform: scale(1.05); }
+
+        .project-info { padding: 2rem; }
+        .project-info h3 { margin-bottom: 0.5rem; letter-spacing: 1px; }
+        .project-info p { color: var(--text-dim); font-size: 0.9rem; }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--accent-color);
+            color: black;
+            text-decoration: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-top: 2rem;
+            transition: var(--transition);
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        footer { padding: 5rem 10%; border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+
+    <nav class="navbar">
+        <div class="logo">SQC<span>.</span></div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Labs</a></li>
+            <li><a href="#contact">Join</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content reveal">
+            <span class="section-title">Established 2026</span>
+            <h1>The Future of <br><span class="gradient-text">Hardware.</span></h1>
+            <p style="max-width: 500px; color: var(--text-dim);">Designing and deploying the next generation of autonomous and integrated technological devices.</p>
+            <a href="#projects" class="btn">Explore Labs</a>
+        </div>
+    </header>
+
+    <section id="about" class="section">
+        <div class="reveal">
+            <span class="section-title">01 / Concept</span>
+            <p class="section-text">
+                We believe the most significant breakthroughs happen at the intersection of <span style="color: var(--accent-color);">minimalist design</span> and <span style="color: white; font-weight: 800;">maximalist engineering.</span>
+            </p>
+        </div>
+    </section>
+
+    <section id="projects" class="section">
+        <span class="section-title reveal">02 / Active Projects</span>
+        <div class="project-grid">
+            <div class="project-card reveal">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1546776310-eef45dd6d63c?auto=format&fit=crop&q=80&w=1000" alt="Robot Project">
+                </div>
+                <div class="project-info">
+                    <h3>Project Spot-V2</h3>
+                    <p>Quadrupedal navigation systems for extreme industrial environments.</p>
+                </div>
+            </div>
+            <div class="project-card reveal">
+                <div class="img-container">
+                    <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1000" alt="Bipedal Project">
+                </div>
+                <div class="project-info">
+                    <h3>Atlas Synthesis</h3>
+                    <p>Bipedal motor control research focusing on human-centric agility.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="reveal">
+            <h2>Think you're ready?</h2>
+            <p style="color: var(--text-dim); margin: 1rem 0 2rem;">We are always looking for visionary engineers.</p>
+            <a href="#" class="btn" style="background: none; color: var(--accent-color); border: 1px solid var(--accent-color);">Submit Portfolio</a>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        // --- 1. THREE.JS 3D BACKGROUND ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Create Star Field Nodes
+        const geometry = new THREE.BufferGeometry();
+        const vertices = [];
+        for (let i = 0; i < 2000; i++) {
+            vertices.push(THREE.MathUtils.randFloatSpread(2000));
+            vertices.push(THREE.MathUtils.randFloatSpread(2000));
+            vertices.push(THREE.MathUtils.randFloatSpread(2000));
+        }
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+        const material = new THREE.PointsMaterial({ color: 0x00ffcc, size: 0.7 });
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        camera.position.z = 800;
+
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+            points.rotation.y += 0.0003;
+            points.rotation.x += 0.0001;
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate3D();
+
+        // --- 2. SCROLL REVEAL ANIMATION ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // --- 3. SMOOTH SCROLL ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
